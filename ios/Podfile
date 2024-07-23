@@ -1,0 +1,41 @@
+platform :ios, '13.4'
+
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+target 'MoodScape' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    :hermes_enabled => false
+  )
+
+  # Enable modular headers for specific dependencies
+  pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'FirebaseFirestore', :modular_headers => true
+  pod 'FirebaseFirestoreInternal', :modular_headers => true
+  pod 'FirebaseStorage', :modular_headers => true
+
+  # Firebase Analytics
+  pod 'Firebase/Analytics'
+  pod 'Firebase/AnalyticsWithoutAdIdSupport'
+
+  # Other dependencies
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'FirebaseCoreExtension', :modular_headers => true
+  pod 'FirebaseAppCheckInterop', :modular_headers => true
+  pod 'FirebaseAuthInterop', :modular_headers => true
+
+  target 'MoodScapeTests' do
+    inherit! :complete
+  end
+
+  # If you are using Flipper, you can uncomment the following lines
+  # use_flipper!({ 'Flipper' => '0.75.1' })
+  # post_install do |installer|
+  #   react_native_post_install(installer)
+  #   __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  # end
+end
