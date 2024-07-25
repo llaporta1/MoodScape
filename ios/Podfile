@@ -16,9 +16,14 @@ target 'MoodScape' do
   pod 'FirebaseFirestore', :modular_headers => true
   pod 'FirebaseFirestoreInternal', :modular_headers => true
   pod 'FirebaseStorage', :modular_headers => true
-  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+  pod 'react-native-screens', :path => '../node_modules/react-native-screens'
   pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
+
+
+  # react-native-screens and other dependencies
+  pod 'react-native-screens', :path => '../node_modules/react-native-screens'
+  pod 'react-native-safe-area-context', :path => '../node_modules/react-native-safe-area-context'
 
   # Firebase Analytics
   pod 'Firebase/Analytics'
