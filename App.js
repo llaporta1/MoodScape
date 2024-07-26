@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import MainScreen from './src/screens/MainScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
+import HomeScreen from './src/screens/HomeScreen';
 import { Alert } from 'react-native';
 import { auth, firestore, firebaseConfig } from './firebase/firebaseConfigs';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -31,6 +32,7 @@ const App = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         Alert.alert('Login successful', `Welcome back, ${user.email}`);
+        setCurrentScreen('Home'); // Navigate to HomeScreen after successful login
       })
       .catch((error) => {
         Alert.alert('Login failed', error.message);
@@ -47,6 +49,7 @@ const App = () => {
         email: user.email
       });
       Alert.alert('Registration successful', `Welcome, ${user.email}`);
+      setCurrentScreen('Home'); // Navigate to HomeScreen after successful registration
     } catch (error) {
       Alert.alert('Registration failed', error.message);
     }
@@ -78,6 +81,8 @@ const App = () => {
         setCurrentScreen={setCurrentScreen}
       />
     );
+  } else if (currentScreen === 'Home') {
+    return <HomeScreen />;
   }
 };
 
