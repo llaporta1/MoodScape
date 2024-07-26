@@ -4,6 +4,10 @@ import MainScreen from './src/screens/MainScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import RegisterScreen from './src/screens/RegisterScreen';
 import HomeScreen from './src/screens/HomeScreen';
+import MyFriendsScreen from './src/screens/MyFriendsScreen';
+import MemoriesScreen from './src/screens/MemoriesScreen';
+import SettingsScreen from './src/screens/SettingsScreen';
+import HelpScreen from './src/screens/HelpScreen';
 import { Alert } from 'react-native';
 import { auth, firestore, firebaseConfig } from './firebase/firebaseConfigs';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -55,35 +59,50 @@ const App = () => {
     }
   };
 
-  if (currentScreen === 'Main') {
-    return <MainScreen />;
-  } else if (currentScreen === 'Login') {
-    return (
-      <LoginScreen
-        loginEmail={loginEmail}
-        setLoginEmail={setLoginEmail}
-        loginPassword={loginPassword}
-        setLoginPassword={setLoginPassword}
-        handleLogin={handleLogin}
-        setCurrentScreen={setCurrentScreen}
-      />
-    );
-  } else if (currentScreen === 'Register') {
-    return (
-      <RegisterScreen
-        registerUsername={registerUsername}
-        setRegisterUsername={setRegisterUsername}
-        registerEmail={registerEmail}
-        setRegisterEmail={setRegisterEmail}
-        registerPassword={registerPassword}
-        setRegisterPassword={setRegisterPassword}
-        handleRegister={handleRegister}
-        setCurrentScreen={setCurrentScreen}
-      />
-    );
-  } else if (currentScreen === 'Home') {
-    return <HomeScreen />;
-  }
+  const renderScreen = () => {
+    switch (currentScreen) {
+      case 'Main':
+        return <MainScreen />;
+      case 'Login':
+        return (
+          <LoginScreen
+            loginEmail={loginEmail}
+            setLoginEmail={setLoginEmail}
+            loginPassword={loginPassword}
+            setLoginPassword={setLoginPassword}
+            handleLogin={handleLogin}
+            setCurrentScreen={setCurrentScreen}
+          />
+        );
+      case 'Register':
+        return (
+          <RegisterScreen
+            registerUsername={registerUsername}
+            setRegisterUsername={setRegisterUsername}
+            registerEmail={registerEmail}
+            setRegisterEmail={setRegisterEmail}
+            registerPassword={registerPassword}
+            setRegisterPassword={setRegisterPassword}
+            handleRegister={handleRegister}
+            setCurrentScreen={setCurrentScreen}
+          />
+        );
+      case 'Home':
+        return <HomeScreen navigateTo={setCurrentScreen} />;
+      case 'MyFriends':
+        return <MyFriendsScreen navigateTo={setCurrentScreen} />;
+      case 'Memories':
+        return <MemoriesScreen navigateTo={setCurrentScreen} />;
+      case 'Settings':
+        return <SettingsScreen navigateTo={setCurrentScreen} />;
+      case 'Help':
+        return <HelpScreen navigateTo={setCurrentScreen} />;
+      default:
+        return <MainScreen />;
+    }
+  };
+
+  return renderScreen();
 };
 
 export default App;
