@@ -1,27 +1,25 @@
-// import React from 'react';
-// import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+// src/screens/MainScreen.js
+import React from 'react';
+import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 
-// const MainScreen = ({ navigation }) => {
-//   return (
-//     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Login')}>
-//       <Text style={styles.text}>F L I X</Text>
-//     </TouchableOpacity>
-//   );
-// };
+const MainScreen = () => (
+  <SafeAreaView style={styles.container}>
+    <View>
+      <Text style={styles.text}>F  L  I  X</Text>
+    </View>
+  </SafeAreaView>
+);
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: 'black',
-//   },
-//   text: {
-//     fontSize: 60,
-//     color: 'white',
-//     fontFamily: 'PlaywriteDanmarkLoopet', // Ensure this matches your custom font
-//     letterSpacing: 10,
-//   },
-// });
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#013220',
+  },
+  text: {
+    fontSize: 60,
+    color: '#D2B48C',
+    fontWeight: 'bold',
+  },
+});
 
-// export default MainScreen;
+export default MainScreen;

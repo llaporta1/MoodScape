@@ -1,11 +1,11 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getAuth, initializeAuth, getReactNativePersistence } from 'firebase/auth';
+// import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 // Your web app's Firebase configuration (iOS key)
-export const firebaseConfig = {
-  apiKey: "Your-iOS-API-Key-Here", // Replace with the actual iOS API key
+const firebaseConfig = {
+  apiKey: "AIzaSyBtjTy56MlbVBXuZ-nGFjxbuWyb4hysWWo", // Replace with the actual iOS API key
   authDomain: "moodscape-592de.firebaseapp.com",
   projectId: "moodscape-592de",
   storageBucket: "moodscape-592de.appspot.com",
@@ -21,10 +21,12 @@ if (!getApps().length) {
   app = getApp(); // if already initialized, use that one
 }
 
-// Initialize Firebase Authentication with persistence
-export const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(AsyncStorage)
-});
+// Initialize Firebase Authentication and Firestore
+const auth = initializeAuth(app);
+// console.log(reactNativeAsyncStorage);
+// const auth = initializeAuth(app, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage)
+// });
+const db = getFirestore(app);
 
-// Initialize Cloud Firestore and get a reference to the service
-export const db = getFirestore(app);
+export { firebaseConfig, auth, db };
