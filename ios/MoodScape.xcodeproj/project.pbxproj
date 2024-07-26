@@ -15,6 +15,7 @@
 		48258BCC2C4218C8009430FC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 48258BCB2C4218C8009430FC /* FirebaseAnalytics */; };
 		48258BCE2C4218C8009430FC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 48258BCD2C4218C8009430FC /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		487335342C4479DF00A0B37D /* GoogleService-Info-2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 487335332C4479DF00A0B37D /* GoogleService-Info-2.plist */; };
+		48E14A502C532D400027F1A4 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 48E14A4F2C532D400027F1A4 /* Fonts */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		A6C6EED8F2BB70EA6D0EB1AF /* libPods-MoodScape-MoodScapeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B7F39FFE3181E9A3E67F4C4 /* libPods-MoodScape-MoodScapeTests.a */; };
 		C4C47105D14AF73AA445A4C0 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1B98F58A2F803A802A8977C9 /* PrivacyInfo.xcprivacy */; };
@@ -44,6 +45,7 @@
 		1B98F58A2F803A802A8977C9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MoodScape/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		454B4BF7F30E9FEEDBF97CFB /* Pods-MoodScape.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoodScape.debug.xcconfig"; path = "Target Support Files/Pods-MoodScape/Pods-MoodScape.debug.xcconfig"; sourceTree = "<group>"; };
 		487335332C4479DF00A0B37D /* GoogleService-Info-2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info-2.plist"; path = "../../Downloads/GoogleService-Info-2.plist"; sourceTree = "<group>"; };
+		48E14A4F2C532D400027F1A4 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 		6C612D5B9B4A55DCC2BAF7A4 /* Pods-MoodScape-MoodScapeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoodScape-MoodScapeTests.release.xcconfig"; path = "Target Support Files/Pods-MoodScape-MoodScapeTests/Pods-MoodScape-MoodScapeTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MoodScape/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B7F39FFE3181E9A3E67F4C4 /* libPods-MoodScape-MoodScapeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MoodScape-MoodScapeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +130,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				48E14A4F2C532D400027F1A4 /* Fonts */,
 				13B07FAE1A68108700A75B9A /* MoodScape */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MoodScapeTests */,
@@ -260,6 +263,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48E14A502C532D400027F1A4 /* Fonts in Resources */,
 				487335342C4479DF00A0B37D /* GoogleService-Info-2.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -587,10 +591,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = false;
@@ -663,10 +664,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = false;
