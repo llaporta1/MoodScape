@@ -1,16 +1,25 @@
 import React from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const LoginScreen = ({ loginEmail, setLoginEmail, loginPassword, setLoginPassword, handleLogin, setCurrentScreen }) => (
+const RegisterScreen = ({ registerUsername, setRegisterUsername, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword, handleRegister, setCurrentScreen }) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.inner}>
       <Text style={styles.text}>F  L  I  X</Text>
       <TextInput
         style={styles.input}
+        placeholder="Username"
+        placeholderTextColor="#D2B48C"
+        value={registerUsername}
+        onChangeText={text => setRegisterUsername(text)}
+        autoCapitalize="none"
+        textContentType="username"
+      />
+      <TextInput
+        style={styles.input}
         placeholder="Email"
         placeholderTextColor="#D2B48C"
-        value={loginEmail}
-        onChangeText={text => setLoginEmail(text)}
+        value={registerEmail}
+        onChangeText={text => setRegisterEmail(text)}
         autoCapitalize="none"
         keyboardType="email-address"
         textContentType="emailAddress"
@@ -20,21 +29,22 @@ const LoginScreen = ({ loginEmail, setLoginEmail, loginPassword, setLoginPasswor
         placeholder="Password"
         placeholderTextColor="#D2B48C"
         secureTextEntry
-        value={loginPassword}
-        onChangeText={text => setLoginPassword(text)}
+        value={registerPassword}
+        onChangeText={text => setRegisterPassword(text)}
         autoCapitalize="none"
-        textContentType="password"
+        textContentType="newPassword"
       />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Log in</Text>
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
-        setLoginEmail('');
-        setLoginPassword('');
-        setCurrentScreen('Register');
+        setRegisterUsername('');
+        setRegisterEmail('');
+        setRegisterPassword('');
+        setCurrentScreen('Login');
       }}>
         <Text style={styles.signUpText}>
-          New to Flix? <Text style={styles.signUpLink}>Sign Up Now</Text>
+          Already have an account? <Text style={styles.signUpLink}>Log in</Text>
         </Text>
       </TouchableOpacity>
     </View>
@@ -90,4 +100,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;
