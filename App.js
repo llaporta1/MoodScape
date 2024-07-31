@@ -8,8 +8,9 @@ import MyFriendsScreen from './src/screens/MyFriendsScreen';
 import MemoriesScreen from './src/screens/MemoriesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import HelpScreen from './src/screens/HelpScreen';
+import MyProfileScreen from './src/screens/MyProfileScreen'; // Add this import
 import { Alert } from 'react-native';
-import { auth, firestore, firebaseConfig } from './firebase/firebaseConfigs';
+import { auth, firestore } from './firebase/firebaseConfigs';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 
@@ -31,7 +32,6 @@ const App = () => {
   }, [currentScreen]);
 
   const handleLogin = () => {
-    console.log("API Key: ", firebaseConfig.apiKey);
     signInWithEmailAndPassword(auth, loginEmail, loginPassword)
       .then((userCredential) => {
         const user = userCredential.user;
@@ -45,12 +45,13 @@ const App = () => {
 
   const handleRegister = async () => {
     try {
-      console.log("API Key: ", firebaseConfig.apiKey);
       const userCredential = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
       const user = userCredential.user;
       await setDoc(doc(firestore, 'users', user.uid), {
         username: registerUsername,
-        email: user.email
+        email: user.email,
+        friends: [], // Initialize empty list of friends
+        profilePicUri: "" // Initialize empty profile picture URI
       });
       Alert.alert('Registration successful', `Welcome, ${user.email}`);
       setCurrentScreen('Home'); // Navigate to HomeScreen after successful registration
@@ -97,6 +98,8 @@ const App = () => {
         return <SettingsScreen navigateTo={setCurrentScreen} />;
       case 'Help':
         return <HelpScreen navigateTo={setCurrentScreen} />;
+      case 'MyProfile': 
+        return <MyProfileScreen navigateTo={setCurrentScreen} />;
       default:
         return <MainScreen />;
     }

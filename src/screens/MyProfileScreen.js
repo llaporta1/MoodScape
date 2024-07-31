@@ -2,11 +2,11 @@ import React from 'react';
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import Menu from '../components/Menu';
 
-const HelpScreen = ({ navigateTo }) => (
+const MyProfileScreen = ({ navigateTo }) => (
   <SafeAreaView style={styles.container}>
     <Menu navigateTo={navigateTo} />
     <View style={styles.inner}>
-      <Text style={styles.text}>Help</Text>
+      <Text style={styles.text}>My Profile</Text>
     </View>
   </SafeAreaView>
 );
@@ -14,7 +14,7 @@ const HelpScreen = ({ navigateTo }) => (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff', // White background
+    backgroundColor: '#ffffff',
   },
   inner: {
     flex: 1,
@@ -22,9 +22,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
-    fontSize: 20, // Adjust font size as needed
-    color: '#000000', // Black text color
+    fontSize: 20,
+    color: '#000000',
   },
 });
 
-export default HelpScreen;
+export default MyProfileScreen;

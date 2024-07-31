@@ -1,7 +1,16 @@
 import React from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const RegisterScreen = ({ registerUsername, setRegisterUsername, registerEmail, setRegisterEmail, registerPassword, setRegisterPassword, handleRegister, setCurrentScreen }) => (
+const RegisterScreen = ({
+  registerUsername,
+  setRegisterUsername,
+  registerEmail,
+  setRegisterEmail,
+  registerPassword,
+  setRegisterPassword,
+  handleRegister,
+  setCurrentScreen,
+}) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.inner}>
       <Text style={styles.text}>F  L  I  X</Text>
@@ -66,6 +75,16 @@ const styles = StyleSheet.create({
     color: '#D2B48C',
     fontWeight: 'bold',
   },
+  input: {
+    width: '80%',
+    color: '#D2B48C',
+    fontSize: 18,
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#D2B48C',
+    marginVertical: 10,
+  },
   button: {
     marginTop: 20,
     paddingVertical: 10,
@@ -77,16 +96,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#013220',
     fontWeight: 'bold',
-  },
-  input: {
-    width: '80%',
-    color: '#D2B48C',
-    fontSize: 18,
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderBottomWidth: 1,
-    borderBottomColor: '#D2B48C',
-    marginVertical: 10,
   },
   signUpText: {
     marginTop: 20,
