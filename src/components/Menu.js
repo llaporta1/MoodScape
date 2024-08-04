@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 
 const Menu = ({ navigateTo }) => {
   const [menuVisible, setMenuVisible] = useState(false);
@@ -18,7 +17,7 @@ const Menu = ({ navigateTo }) => {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity onPress={toggleMenu} style={styles.menuButton}>
-          <Ionicons name="menu" size={32} color="black" />
+          <Image source={require('../../assets/menu-bar.png')} style={styles.menuIcon} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleMenuSelection('MyProfile')} style={styles.profileButton}>
           <View style={styles.profilePhotoHolder} />
@@ -54,7 +53,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    left: 10, // Moved more to the side
     zIndex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -68,6 +67,10 @@ const styles = StyleSheet.create({
   },
   menuButton: {
     padding: 16,
+  },
+  menuIcon: {
+    width: 32,
+    height: 32,
   },
   profileButton: {
     padding: 16,

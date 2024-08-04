@@ -14,6 +14,7 @@
 		24D417A1FF945EAAAA896885 /* libPods-MoodScape.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D09617BB8BBF7C09C0B72DE4 /* libPods-MoodScape.a */; };
 		48258BCC2C4218C8009430FC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 48258BCB2C4218C8009430FC /* FirebaseAnalytics */; };
 		48258BCE2C4218C8009430FC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 48258BCD2C4218C8009430FC /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		4854EE752C5EDCF9008C7B54 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4854EE742C5EDCAF008C7B54 /* libRNImagePicker.a */; };
 		487335342C4479DF00A0B37D /* GoogleService-Info-2.plist in Resources */ = {isa = PBXBuildFile; fileRef = 487335332C4479DF00A0B37D /* GoogleService-Info-2.plist */; };
 		48E14A502C532D400027F1A4 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = 48E14A4F2C532D400027F1A4 /* Fonts */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -28,6 +29,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = MoodScape;
+		};
+		4854EE732C5EDCAF008C7B54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4854EE6F2C5EDCAF008C7B54 /* RNImagePicker.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
+			remoteInfo = RNImagePicker;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -44,6 +52,7 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = MoodScape/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		1B98F58A2F803A802A8977C9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = MoodScape/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		454B4BF7F30E9FEEDBF97CFB /* Pods-MoodScape.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoodScape.debug.xcconfig"; path = "Target Support Files/Pods-MoodScape/Pods-MoodScape.debug.xcconfig"; sourceTree = "<group>"; };
+		4854EE6F2C5EDCAF008C7B54 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		487335332C4479DF00A0B37D /* GoogleService-Info-2.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info-2.plist"; path = "../../Downloads/GoogleService-Info-2.plist"; sourceTree = "<group>"; };
 		48E14A4F2C532D400027F1A4 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 		6C612D5B9B4A55DCC2BAF7A4 /* Pods-MoodScape-MoodScapeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoodScape-MoodScapeTests.release.xcconfig"; path = "Target Support Files/Pods-MoodScape-MoodScapeTests/Pods-MoodScape-MoodScapeTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -68,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4854EE752C5EDCF9008C7B54 /* libRNImagePicker.a in Frameworks */,
 				48258BCC2C4218C8009430FC /* FirebaseAnalytics in Frameworks */,
 				48258BCE2C4218C8009430FC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				24D417A1FF945EAAAA896885 /* libPods-MoodScape.a in Frameworks */,
@@ -120,9 +130,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		4854EE702C5EDCAF008C7B54 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4854EE742C5EDCAF008C7B54 /* libRNImagePicker.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				4854EE6F2C5EDCAF008C7B54 /* RNImagePicker.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -243,6 +262,12 @@
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 4854EE702C5EDCAF008C7B54 /* Products */;
+					ProjectRef = 4854EE6F2C5EDCAF008C7B54 /* RNImagePicker.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* MoodScape */,
@@ -250,6 +275,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		4854EE742C5EDCAF008C7B54 /* libRNImagePicker.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNImagePicker.a;
+			remoteRef = 4854EE732C5EDCAF008C7B54 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		00E356EC1AD99517003FC87E /* Resources */ = {
