@@ -11,6 +11,7 @@ const MyFriendsScreen = ({ navigateTo }) => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [friendsList, setFriendsList] = useState([]);
   const [requestCount, setRequestCount] = useState(0);
+  const [mutualFriends, setMutualFriends] = useState([]);
 
   useEffect(() => {
     fetchFriendRequests();
@@ -61,7 +62,26 @@ const MyFriendsScreen = ({ navigateTo }) => {
           .map(doc => ({ id: doc.id, username: doc.data().username }))
           .filter(user => user.id !== auth.currentUser.uid); // Ensure the current user is not in the list
 
-        setSearchResults(users);
+        const mutuals = await Promise.all(
+          users.map(async (user) => {
+            const userDocRef = doc(firestore, 'users', user.id);
+            const userDoc = await getDoc(userDocRef);
+            const userFriends = userDoc.data().friends || [];
+            const mutual = userFriends.filter(friendId => friendsList.some(friend => friend.id === friendId));
+            
+            const mutualDetails = await Promise.all(
+              mutual.map(async (mutualId) => {
+                const mutualDocRef = doc(firestore, 'users', mutualId);
+                const mutualDoc = await getDoc(mutualDocRef);
+                return mutualDoc.data().username;
+              })
+            );
+
+            return { ...user, mutualFriends: mutualDetails, isFriend: friendsList.some(friend => friend.id === user.id) };
+          })
+        );
+
+        setSearchResults(mutuals);
       } catch (error) {
         console.error('Error searching users: ', error);
       }
@@ -212,10 +232,24 @@ const MyFriendsScreen = ({ navigateTo }) => {
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <View style={styles.friendItem}>
-                  <Text>{item.username}</Text>
-                  <TouchableOpacity onPress={() => sendFriendRequest(item.id)}>
-                    <Text>Send Friend Request</Text>
-                  </TouchableOpacity>
+                  <Image source={require('../../assets/profile-placeholder.png')} style={styles.placeholderImage} />
+                  <View style={styles.friendItemText}>
+                    <Text>{item.username}</Text>
+                    {item.mutualFriends.length > 0 && (
+                      <TouchableOpacity onPress={() => setMutualFriends(item.mutualFriends)}>
+                        <Text style={styles.mutualFriendsText}>{item.mutualFriends.length} mutual friends</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  <View>
+                    {item.isFriend ? (
+                      <Text>Friends</Text>
+                    ) : (
+                      <TouchableOpacity onPress={() => sendFriendRequest(item.id)}>
+                        <Text>Send Friend Request</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
                 </View>
               )}
             />
@@ -226,21 +260,27 @@ const MyFriendsScreen = ({ navigateTo }) => {
       )}
 
       {activeTab === 'requests' && (
-        <FlatList
-          data={friendRequests}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.friendRequestItem}>
-              <Text>{item.senderUsername}</Text>
-              <TouchableOpacity onPress={() => acceptFriendRequest(item.id)}>
-                <Text>Accept</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => declineFriendRequest(item.id)}>
-                <Text>Decline</Text>
-              </TouchableOpacity>
-            </View>
+        <>
+          {friendRequests.length > 0 ? (
+            <FlatList
+              data={friendRequests}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <View style={styles.friendRequestItem}>
+                  <Text>{item.senderUsername}</Text>
+                  <TouchableOpacity onPress={() => acceptFriendRequest(item.id)}>
+                    <Text>Accept</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => declineFriendRequest(item.id)}>
+                    <Text>Decline</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            />
+          ) : (
+            <Text style={styles.noResultsText}>No Requests</Text>
           )}
-        />
+        </>
       )}
 
       {activeTab === 'friends' && (
@@ -249,7 +289,8 @@ const MyFriendsScreen = ({ navigateTo }) => {
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <View style={styles.friendItem}>
-              <Text>{item.username}</Text>
+              <Image source={require('../../assets/profile-placeholder.png')} style={styles.placeholderImage} />
+              <Text style={styles.friendItemText}>{item.username}</Text>
             </View>
           )}
           ListEmptyComponent={() => (
@@ -258,6 +299,18 @@ const MyFriendsScreen = ({ navigateTo }) => {
             </Text>
           )}
         />
+      )}
+
+      {mutualFriends.length > 0 && (
+        <View style={styles.mutualFriendsContainer}>
+          <Text style={styles.mutualFriendsHeader}>Mutual Friends</Text>
+          {mutualFriends.map((friend, index) => (
+            <Text key={index} style={styles.mutualFriendItem}>{friend}</Text>
+          ))}
+          <TouchableOpacity onPress={() => setMutualFriends([])}>
+            <Text style={styles.closeMutualFriends}>Close</Text>
+          </TouchableOpacity>
+        </View>
       )}
     </SafeAreaView>
   );
@@ -323,10 +376,25 @@ const styles = StyleSheet.create({
   },
   friendItem: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'space-between', // Align text and button to the right
     padding: 10,
     borderBottomColor: 'gray',
     borderBottomWidth: 1,
+  },
+  friendItemText: {
+    flex: 1, // Take up remaining space
+    marginLeft: 10,
+  },
+  placeholderImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#d3d3d3',
+  },
+  mutualFriendsText: {
+    textDecorationLine: 'underline',
+    color: 'blue',
   },
   friendRequestItem: {
     flexDirection: 'row',
@@ -337,6 +405,28 @@ const styles = StyleSheet.create({
   },
   inner: {
     paddingHorizontal: 20,
+  },
+  mutualFriendsContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: '#fff',
+    padding: 20,
+    borderTopColor: 'gray',
+    borderTopWidth: 1,
+  },
+  mutualFriendsHeader: {
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  mutualFriendItem: {
+    marginBottom: 5,
+  },
+  closeMutualFriends: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+    marginTop: 10,
   },
 });
 
