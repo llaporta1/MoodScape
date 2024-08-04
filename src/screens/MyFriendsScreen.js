@@ -41,7 +41,7 @@ const MyFriendsScreen = ({ navigateTo }) => {
       friends.map(async (friendId) => {
         const friendDocRef = doc(firestore, 'users', friendId);
         const friendDoc = await getDoc(friendDocRef);
-        return { id: friendDoc.id, username: friendDoc.data().username };
+        return { id: friendDoc.id, fullName: friendDoc.data().fullName, username: friendDoc.data().username };
       })
     );
 
@@ -59,7 +59,7 @@ const MyFriendsScreen = ({ navigateTo }) => {
         );
         const querySnapshot = await getDocs(q);
         const users = querySnapshot.docs
-          .map(doc => ({ id: doc.id, username: doc.data().username }))
+          .map(doc => ({ id: doc.id, fullName: doc.data().fullName, username: doc.data().username }))
           .filter(user => user.id !== auth.currentUser.uid); // Ensure the current user is not in the list
 
         const mutuals = await Promise.all(
@@ -73,7 +73,7 @@ const MyFriendsScreen = ({ navigateTo }) => {
               mutual.map(async (mutualId) => {
                 const mutualDocRef = doc(firestore, 'users', mutualId);
                 const mutualDoc = await getDoc(mutualDocRef);
-                return mutualDoc.data().username;
+                return { id: mutualId, fullName: mutualDoc.data().fullName, username: mutualDoc.data().username };
               })
             );
 
@@ -125,6 +125,7 @@ const MyFriendsScreen = ({ navigateTo }) => {
         timestamp: Date.now(),
       });
       alert('Friend request sent');
+      handleSearch(); // Re-fetch search results to update the request status
     } catch (error) {
       console.error('Error sending friend request: ', error);
     }
@@ -234,7 +235,8 @@ const MyFriendsScreen = ({ navigateTo }) => {
                 <View style={styles.friendItem}>
                   <Image source={require('../../assets/profile-placeholder.png')} style={styles.placeholderImage} />
                   <View style={styles.friendItemText}>
-                    <Text>{item.username}</Text>
+                    <Text>{item.fullName}</Text>
+                    <Text style={styles.usernameText}>{item.username}</Text>
                     {item.mutualFriends.length > 0 && (
                       <TouchableOpacity onPress={() => setMutualFriends(item.mutualFriends)}>
                         <Text style={styles.mutualFriendsText}>{item.mutualFriends.length} mutual friends</Text>
@@ -246,7 +248,9 @@ const MyFriendsScreen = ({ navigateTo }) => {
                       <Text>Friends</Text>
                     ) : (
                       <TouchableOpacity onPress={() => sendFriendRequest(item.id)}>
-                        <Text>Send Friend Request</Text>
+                        <Text>
+                          {friendRequests.some(request => request.receiverId === item.id && request.status === 'pending') ? 'Request Sent' : 'Send Friend Request'}
+                        </Text>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -290,7 +294,10 @@ const MyFriendsScreen = ({ navigateTo }) => {
           renderItem={({ item }) => (
             <View style={styles.friendItem}>
               <Image source={require('../../assets/profile-placeholder.png')} style={styles.placeholderImage} />
-              <Text style={styles.friendItemText}>{item.username}</Text>
+              <View style={styles.friendItemText}>
+                <Text>{item.fullName}</Text>
+                <Text style={styles.usernameText}>{item.username}</Text>
+              </View>
             </View>
           )}
           ListEmptyComponent={() => (
@@ -305,7 +312,13 @@ const MyFriendsScreen = ({ navigateTo }) => {
         <View style={styles.mutualFriendsContainer}>
           <Text style={styles.mutualFriendsHeader}>Mutual Friends</Text>
           {mutualFriends.map((friend, index) => (
-            <Text key={index} style={styles.mutualFriendItem}>{friend}</Text>
+            <View key={index} style={styles.friendItem}>
+              <Image source={require('../../assets/profile-placeholder.png')} style={styles.placeholderImage} />
+              <View style={styles.friendItemText}>
+                <Text>{friend.fullName}</Text>
+                <Text style={styles.usernameText}>{friend.username}</Text>
+              </View>
+            </View>
           ))}
           <TouchableOpacity onPress={() => setMutualFriends([])}>
             <Text style={styles.closeMutualFriends}>Close</Text>
@@ -386,6 +399,10 @@ const styles = StyleSheet.create({
     flex: 1, // Take up remaining space
     marginLeft: 10,
   },
+  usernameText: {
+    fontSize: 12,
+    color: 'gray',
+  },
   placeholderImage: {
     width: 40,
     height: 40,
@@ -419,9 +436,6 @@ const styles = StyleSheet.create({
   mutualFriendsHeader: {
     fontWeight: 'bold',
     marginBottom: 10,
-  },
-  mutualFriendItem: {
-    marginBottom: 5,
   },
   closeMutualFriends: {
     textDecorationLine: 'underline',

@@ -1,19 +1,24 @@
 import React from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const LoginScreen = ({ loginEmail, setLoginEmail, loginPassword, setLoginPassword, handleLogin, setCurrentScreen }) => (
+const LoginScreen = ({
+  loginIdentifier,
+  setLoginIdentifier,
+  loginPassword,
+  setLoginPassword,
+  handleLogin,
+  setCurrentScreen
+}) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.inner}>
       <Text style={styles.text}>F  L  I  X</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Email or Username"
         placeholderTextColor="#D2B48C"
-        value={loginEmail}
-        onChangeText={text => setLoginEmail(text)}
+        value={loginIdentifier}
+        onChangeText={text => setLoginIdentifier(text)}
         autoCapitalize="none"
-        keyboardType="email-address"
-        textContentType="emailAddress"
       />
       <TextInput
         style={styles.input}
@@ -29,7 +34,7 @@ const LoginScreen = ({ loginEmail, setLoginEmail, loginPassword, setLoginPasswor
         <Text style={styles.buttonText}>Log in</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
-        setLoginEmail('');
+        setLoginIdentifier('');
         setLoginPassword('');
         setCurrentScreen('Register');
       }}>

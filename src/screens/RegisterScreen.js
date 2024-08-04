@@ -8,12 +8,23 @@ const RegisterScreen = ({
   setRegisterEmail,
   registerPassword,
   setRegisterPassword,
+  registerFullName,
+  setRegisterFullName,
   handleRegister,
   setCurrentScreen,
 }) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.inner}>
       <Text style={styles.text}>F  L  I  X</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Full Name"
+        placeholderTextColor="#D2B48C"
+        value={registerFullName}
+        onChangeText={text => setRegisterFullName(text)}
+        autoCapitalize="words"
+        textContentType="name"
+      />
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -47,6 +58,7 @@ const RegisterScreen = ({
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => {
+        setRegisterFullName('');
         setRegisterUsername('');
         setRegisterEmail('');
         setRegisterPassword('');
