@@ -1,14 +1,7 @@
 import React from 'react';
 import { SafeAreaView, View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 
-const LoginScreen = ({
-  loginIdentifier,
-  setLoginIdentifier,
-  loginPassword,
-  setLoginPassword,
-  handleLogin,
-  setCurrentScreen
-}) => (
+const LoginScreen = ({ loginIdentifier, setLoginIdentifier, loginPassword, setLoginPassword, handleLogin, setCurrentScreen }) => (
   <SafeAreaView style={styles.container}>
     <View style={styles.inner}>
       <Text style={styles.text}>F  L  I  X</Text>

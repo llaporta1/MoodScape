@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { NativeModules } from 'react-native';
+console.log(NativeModules);
+console.log(NativeModules.RNCWebView);
 import { useState, useEffect } from 'react';
 import MainScreen from './src/screens/MainScreen';
 import LoginScreen from './src/screens/LoginScreen';
@@ -9,10 +12,11 @@ import MemoriesScreen from './src/screens/MemoriesScreen';
 import SettingsScreen from './src/screens/SettingsScreen';
 import HelpScreen from './src/screens/HelpScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
+import MyFlixScreen from './src/screens/MyFlixScreen';
 import { Alert } from 'react-native';
 import { auth, firestore } from './firebase/firebaseConfigs';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc, getDocs, collection, query, where } from 'firebase/firestore';
+import { setDoc, doc } from 'firebase/firestore';
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState('Main');
@@ -34,21 +38,21 @@ const App = () => {
 
   const handleLogin = async () => {
     try {
+      // Check if the identifier is an email or username
       let email = loginIdentifier;
-
-      if (!email.includes('@')) {
-        const usersRef = collection(firestore, 'users');
-        const q = query(usersRef, where('username', '==', loginIdentifier));
+      if (!loginIdentifier.includes('@')) {
+        const q = query(
+          collection(firestore, 'users'),
+          where('username', '==', loginIdentifier)
+        );
         const querySnapshot = await getDocs(q);
-        if (querySnapshot.empty) {
-          throw new Error('Username not found');
+        if (!querySnapshot.empty) {
+          email = querySnapshot.docs[0].data().email;
+        } else {
+          throw new Error('Invalid username or email');
         }
-        email = querySnapshot.docs[0].data().email;
       }
-
-      const userCredential = await signInWithEmailAndPassword(auth, email, loginPassword);
-      const user = userCredential.user;
-      Alert.alert('Login successful', `Welcome back, ${user.email}`);
+      await signInWithEmailAndPassword(auth, email, loginPassword);
       setCurrentScreen('Home');
     } catch (error) {
       Alert.alert('Login failed', error.message);
@@ -67,7 +71,7 @@ const App = () => {
         profilePicUri: "" // Initialize empty profile picture URI
       });
       Alert.alert('Registration successful', `Welcome, ${user.email}`);
-      setCurrentScreen('Home');
+      setCurrentScreen('Home'); // Navigate to HomeScreen after successful registration
     } catch (error) {
       Alert.alert('Registration failed', error.message);
     }
@@ -115,6 +119,8 @@ const App = () => {
         return <HelpScreen navigateTo={setCurrentScreen} />;
       case 'MyProfile':
         return <MyProfileScreen navigateTo={setCurrentScreen} />;
+      case 'MyFlix':
+        return <MyFlixScreen navigateTo={setCurrentScreen} />;
       default:
         return <MainScreen />;
     }

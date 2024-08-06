@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
 import { auth, firestore } from '../../firebase/firebaseConfigs';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getDoc, doc } from 'firebase/firestore';
 import Menu from '../components/Menu';
 
 const MyProfileScreen = ({ navigateTo }) => {
@@ -36,47 +34,6 @@ const MyProfileScreen = ({ navigateTo }) => {
     fetchUserData();
   }, []);
 
-  const handleImagePicker = () => {
-    const options = {
-      mediaType: 'photo',
-      maxWidth: 300,
-      maxHeight: 300,
-      quality: 1,
-    };
-
-    launchImageLibrary(options, async (response) => {
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else {
-        const uri = response.assets[0].uri;
-        setProfilePicUri(uri);
-
-        // Upload image to Firebase Storage
-        const storage = getStorage();
-        const storageRef = ref(storage, `profile_pics/${auth.currentUser.uid}`);
-        const img = await fetch(uri);
-        const bytes = await img.blob();
-
-        uploadBytes(storageRef, bytes)
-          .then(() => {
-            console.log('Uploaded a blob or file!');
-            // Get the download URL and update Firestore
-            getDownloadURL(storageRef).then((downloadURL) => {
-              const userDocRef = doc(firestore, 'users', auth.currentUser.uid);
-              updateDoc(userDocRef, {
-                profilePicUri: downloadURL,
-              });
-            });
-          })
-          .catch((error) => {
-            console.error('Error uploading image: ', error);
-          });
-      }
-    });
-  };
-
   return (
     <View style={styles.container}>
       <Menu navigateTo={navigateTo} />
@@ -95,9 +52,6 @@ const MyProfileScreen = ({ navigateTo }) => {
             source={profilePicUri ? { uri: profilePicUri } : require('../../assets/profile-placeholder.png')}
             style={styles.profilePic}
           />
-          <TouchableOpacity onPress={handleImagePicker} style={styles.cameraIconContainer}>
-            <Image source={require('../../assets/camera.png')} style={styles.cameraIcon} />
-          </TouchableOpacity>
         </View>
         <View style={styles.inputContainer}>
           <Text>Full Name</Text>
@@ -161,15 +115,6 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     backgroundColor: '#d3d3d3',
-  },
-  cameraIconContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-  },
-  cameraIcon: {
-    width: 24,
-    height: 24,
   },
   inputContainer: {
     width: '80%',
