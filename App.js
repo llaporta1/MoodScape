@@ -13,6 +13,7 @@ import SettingsScreen from './src/screens/SettingsScreen';
 import HelpScreen from './src/screens/HelpScreen';
 import MyProfileScreen from './src/screens/MyProfileScreen';
 import MyFlixScreen from './src/screens/MyFlixScreen';
+import MyFlixExistingScreen from './src/screens/MyFlixExistingScreen'; // Import the new screen
 import { Alert } from 'react-native';
 import { auth, firestore } from './firebase/firebaseConfigs';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
@@ -20,6 +21,7 @@ import { setDoc, doc } from 'firebase/firestore';
 
 const App = () => {
   const [currentScreen, setCurrentScreen] = useState('Main');
+  const [screenParams, setScreenParams] = useState(null); // To hold screen params
   const [loginIdentifier, setLoginIdentifier] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [registerFullName, setRegisterFullName] = useState('');
@@ -108,7 +110,7 @@ const App = () => {
           />
         );
       case 'Home':
-        return <HomeScreen navigateTo={setCurrentScreen} />;
+        return <HomeScreen navigateTo={(screen, params) => { setCurrentScreen(screen); setScreenParams(params); }} />;
       case 'MyFriends':
         return <MyFriendsScreen navigateTo={setCurrentScreen} />;
       case 'Memories':
@@ -121,6 +123,8 @@ const App = () => {
         return <MyProfileScreen navigateTo={setCurrentScreen} />;
       case 'MyFlix':
         return <MyFlixScreen navigateTo={setCurrentScreen} />;
+      case 'MyFlixExisting': // Add new case for MyFlixExisting screen
+        return <MyFlixExistingScreen navigateTo={setCurrentScreen} route={{ params: screenParams }} />;
       default:
         return <MainScreen />;
     }

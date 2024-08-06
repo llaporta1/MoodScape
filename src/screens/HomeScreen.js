@@ -7,12 +7,14 @@ import Menu from '../components/Menu';
 const HomeScreen = ({ navigateTo }) => {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
+  const [userPost, setUserPost] = useState(null);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const user = auth.currentUser;
         if (user) {
+          const now = new Date();
           const userDoc = await getDoc(doc(firestore, 'users', user.uid));
           if (userDoc.exists()) {
             const friendsList = userDoc.data().friends || [];
@@ -22,7 +24,15 @@ const HomeScreen = ({ navigateTo }) => {
             onSnapshot(postsQuery, (querySnapshot) => {
               const postsData = [];
               querySnapshot.forEach((doc) => {
-                postsData.push({ id: doc.id, ...doc.data() });
+                const post = { id: doc.id, ...doc.data() };
+                const postTime = post.timestamp.toDate();
+                const timeDifference = (now - postTime) / (1000 * 60 * 60); // Difference in hours
+                if (timeDifference <= 24) {
+                  postsData.push(post);
+                  if (post.userId === user.uid) {
+                    setUserPost(post);
+                  }
+                }
               });
               setPosts(postsData);
             });
@@ -36,6 +46,14 @@ const HomeScreen = ({ navigateTo }) => {
 
     fetchPosts();
   }, []);
+
+  const handleMyFlixPress = () => {
+    if (userPost) {
+      navigateTo('MyFlixExisting', { post: userPost });
+    } else {
+      navigateTo('MyFlix');
+    }
+  };
 
   const renderItem = ({ item }) => (
     <View style={styles.post}>
@@ -57,7 +75,7 @@ const HomeScreen = ({ navigateTo }) => {
           keyExtractor={(item) => item.id}
           contentContainerStyle={styles.flatListContent}
         />
-        <TouchableOpacity style={styles.myFlixButton} onPress={() => navigateTo('MyFlix')}>
+        <TouchableOpacity style={styles.myFlixButton} onPress={handleMyFlixPress}>
           <Image source={require('../../assets/my-flix.png')} style={styles.myFlixIcon} />
         </TouchableOpacity>
       </View>
