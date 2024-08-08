@@ -1,11 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { firestore, auth } from '../../firebase/firebaseConfigs';
-import { setDoc, doc, collection, addDoc } from 'firebase/firestore';
+import { getDoc, doc, collection, addDoc } from 'firebase/firestore';
 
 const MyFlixScreen = ({ navigateTo }) => {
   const [caption, setCaption] = useState('');
   const [error, setError] = useState(null);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userDoc = await getDoc(doc(firestore, 'users', user.uid));
+          if (userDoc.exists()) {
+            setUsername(userDoc.data().username);
+          }
+        }
+      } catch (err) {
+        console.error('Error fetching user profile: ', err);
+        setError('Failed to fetch user profile');
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleCreatePost = async () => {
     const randomImageUri = `https://picsum.photos/200/300?random=${Math.floor(Math.random() * 1000)}`;
@@ -15,7 +35,7 @@ const MyFlixScreen = ({ navigateTo }) => {
       if (user) {
         const newPost = {
           userId: user.uid,
-          username: user.displayName,
+          username: username,
           imageUri: randomImageUri,
           caption: caption,
           timestamp: new Date(),
